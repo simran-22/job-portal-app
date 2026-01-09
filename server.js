@@ -1,37 +1,41 @@
-
 require("dotenv").config();
 
 const express = require("express");
-const User = require('./models/user');
-console.log(User)
-require("dotenv").config();
 const connectDB = require("./db");
 
+// connect DB
 connectDB();
 
+const app = express(); // ✅ app sabse pehle initialize
 
-const app = express();
-//Middleware
+// middleware
 app.use(express.json());
 
+
+// routes
 const authRoutes = require("./routes/authRoutes");
+const jobRoute = require("./routes/jobRoute");
 
-// use routes
 app.use("/app", authRoutes);
+app.use("/app/jobs", jobRoute);
 
+
+
+// test routes
 app.get("/", (req, res) => {
   res.send("Hello world");
 });
 
-// post route
 app.post("/test", (req, res) => {
   console.log(req.body);
   res.json({
-    message: "Data recieved succesfully",
+    message: "Data received successfully",
     data: req.body,
   });
 });
 
-app.listen(3000, () => {
-  console.log("Hello window");
+// start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log("Server running on port", PORT);
 });

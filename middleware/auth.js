@@ -22,9 +22,9 @@ const authmiddleware = (req, res, next) => {
 
 
   const token = authHeader.split(" ")[1]; // Bearer TOKEN
-  console.log("ENV SECRET ", process.env.JWT_SECRET);
-  console.log("TOKEN ", token);
-  console.log("HEADER 👉", authHeader);
+  // console.log("ENV SECRET ", process.env.JWT_SECRET);
+  // console.log("TOKEN ", token);
+  // console.log("HEADER 👉", authHeader);
 
   try {
     const decode = jwt.verify(token, JWT_SECRET);
