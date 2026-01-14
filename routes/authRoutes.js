@@ -19,7 +19,7 @@ router.get("/profile", authMiddleware, (req, res) => {
 // Register route
 
 router.post("/register", async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   //Validate kro
   if (!name || !email || !password) {
@@ -48,28 +48,28 @@ router.post("/register", async (req, res) => {
 
   // password hashing...
   try {
-// 4️⃣ Check if user already exists
-const existingUser = await User.findOne({email});
-if(existingUser){
-   return res.status(400).json({
+    // 4️⃣ Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
         success: false,
         message: "User already exists",
       });
-}
+    }
 
-   //Hash password
+    //Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
-    
-  //save user in mongo db
-  const user = await User.create({
-    name, email,password:hashedPassword
-  });
 
-// Success response
+    //save user in mongo db
+    const user = await User.create({
+      name, email, password: hashedPassword, role: role || "user"
+    });
+
+    // Success response
     return res.status(200).json({
       success: true,
       message: "User registered successfully",
-      user:{
+      user: {
         id: user._id,
         name: user.name,
         email: user.email,
@@ -97,7 +97,7 @@ router.post("/login", async (req, res) => {
   }
 
   try {
-  
+
     // ✅ Fetch user from DB
     const saveduser = await User.findOne({ email });
     if (!saveduser) {
@@ -115,7 +115,7 @@ router.post("/login", async (req, res) => {
         message: "Entercorrect Password",
       });
     }
-   const token = jwt.sign({ userId: saveduser._id },JWT_SECRET,{ expiresIn: "1h" });
+    const token = jwt.sign({ userId: saveduser._id, role: saveduser.role }, JWT_SECRET, { expiresIn: "1h" });
     return res.status(200).json({
       success: true,
       message: " Login successfully",

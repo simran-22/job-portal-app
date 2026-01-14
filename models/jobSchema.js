@@ -10,7 +10,7 @@ const jobSchema = new mongoose.Schema(
     type: { type: String },
     postedBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
+      ref: "User",
       required: true,
     },
   },
