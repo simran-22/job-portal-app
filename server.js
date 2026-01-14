@@ -15,9 +15,11 @@ app.use(express.json());
 // routes
 const authRoutes = require("./routes/authRoutes");
 const jobRoute = require("./routes/jobRoute");
+const jobSearchRoute = require('./routes/jobSearchRoutes');
 
 app.use("/app", authRoutes);
 app.use("/app/jobs", jobRoute);
+app.use('/app/jobsearch', jobSearchRoute);
 
 
 

@@ -38,37 +38,6 @@ const createJob = async (req, res) => {
     })
   }
 }
-// get all jobs
-const getAllJobs = async (req, res) => {
-  try {
-    const jobs = await Job.find().sort({ createdAt: -1 });
-    res.status(200).json({
-      success: true,
-      count: jobs.length,
-      jobs
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message
-    });
-  }
-}
-
-// get job by ID
-
-const getJobById = async (req, res) => {
-  try {
-    const job = await Job.findById(req.params.id);
-    if (!job) {
-      return res.statud(404).json({
-        success: false, message: "Job not found"
-      })
-    }
-  } catch (err) {
-    res.status(500).json({ success: true, message: err.message })
-  }
-}
 
 // Update Job (only recruiter who posted it)
 
@@ -108,4 +77,4 @@ const deleteJob = async (req, res) => {
 };
 
 
-module.exports = { createJob, getAllJobs, getJobById, updateJob, deleteJob };
+module.exports = { createJob, updateJob, deleteJob };
